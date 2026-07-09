@@ -15,33 +15,34 @@ import javax.swing.JPanel;
 public class PurchaseBotGUI extends JFrame {
 
 
-    private List<PurchaseItem> items;
+    private List<MesItem> items;
 
 
     private int index = 0;
 
 
 
-    private JLabel supplierLabel;
-    private JLabel productLabel;
-    private JLabel quantityLabel;
+    private JLabel typeLabel;
+    private JLabel nameLabel;
+    private JLabel fullNameLabel;
+    private JLabel specLabel;
+    private JLabel tempLabel;
     private JLabel unitLabel;
     private JLabel priceLabel;
-    private JLabel dateLabel;
 
 
 
-    public PurchaseBotGUI(List<PurchaseItem> items) {
+    public PurchaseBotGUI(List<MesItem> items) {
 
 
         this.items = items;
 
 
 
-        setTitle("採購資料瀏覽工具");
+        setTitle("MES新增資料");
 
 
-        setSize(500,400);
+        setSize(600,450);
 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,37 +52,77 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
-        JPanel centerPanel = new JPanel(
-                new GridLayout(6,2)
+
+        JPanel centerPanel =
+                new JPanel(new GridLayout(7,2));
+
+
+
+        // 品項類型
+
+        centerPanel.add(
+                new JLabel("品項類型")
         );
 
+        typeLabel = new JLabel();
 
-
-        centerPanel.add(new JLabel("廠商"));
-
-        supplierLabel = new JLabel();
-
-        centerPanel.add(supplierLabel);
+        centerPanel.add(typeLabel);
 
 
 
-        centerPanel.add(new JLabel("品名"));
+        // 品項名稱
 
-        productLabel = new JLabel();
+        centerPanel.add(
+                new JLabel("品項名稱")
+        );
 
-        centerPanel.add(productLabel);
+        nameLabel = new JLabel();
 
-
-
-        centerPanel.add(new JLabel("數量"));
-
-        quantityLabel = new JLabel();
-
-        centerPanel.add(quantityLabel);
+        centerPanel.add(nameLabel);
 
 
 
-        centerPanel.add(new JLabel("單位"));
+        // 品項全名
+
+        centerPanel.add(
+                new JLabel("品項全名")
+        );
+
+        fullNameLabel = new JLabel();
+
+        centerPanel.add(fullNameLabel);
+
+
+
+        // 品項規格
+
+        centerPanel.add(
+                new JLabel("品項規格")
+        );
+
+        specLabel = new JLabel();
+
+        centerPanel.add(specLabel);
+
+
+
+        // 保存溫層
+
+        centerPanel.add(
+                new JLabel("保存溫層")
+        );
+
+        tempLabel = new JLabel();
+
+        centerPanel.add(tempLabel);
+
+
+
+        // 採購單位
+
+        centerPanel.add(
+                new JLabel("採購單位")
+        );
 
         unitLabel = new JLabel();
 
@@ -89,7 +130,11 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
-        centerPanel.add(new JLabel("價格"));
+        // 初次報價
+
+        centerPanel.add(
+                new JLabel("初次報價")
+        );
 
         priceLabel = new JLabel();
 
@@ -97,15 +142,11 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
-        centerPanel.add(new JLabel("日期"));
+        add(
+                centerPanel,
+                BorderLayout.CENTER
+        );
 
-        dateLabel = new JLabel();
-
-        centerPanel.add(dateLabel);
-
-
-
-        add(centerPanel, BorderLayout.CENTER);
 
 
 
@@ -120,6 +161,12 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
+        JButton addButton =
+                new JButton("新增");
+
+
+
+
         JPanel bottom =
                 new JPanel();
 
@@ -129,12 +176,20 @@ public class PurchaseBotGUI extends JFrame {
 
         bottom.add(nextButton);
 
-
-
-        add(bottom, BorderLayout.SOUTH);
+        bottom.add(addButton);
 
 
 
+        add(
+                bottom,
+                BorderLayout.SOUTH
+        );
+
+
+
+
+
+        // 上一筆
 
         prevButton.addActionListener(e -> {
 
@@ -153,6 +208,9 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
+
+        // 下一筆
+
         nextButton.addActionListener(e -> {
 
 
@@ -169,6 +227,36 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
+
+
+        // 新增按鈕(目前先測試)
+
+        addButton.addActionListener(e -> {
+
+
+            MesItem item =
+                    items.get(index);
+
+
+
+            System.out.println(
+                    "準備新增:"
+                    + item.getItemName()
+            );
+
+
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "新增成功 OK"
+            );
+
+
+        });
+
+
+
+
         showData();
 
 
@@ -177,30 +265,43 @@ public class PurchaseBotGUI extends JFrame {
 
 
 
+
+
     private void showData(){
 
 
-        PurchaseItem item =
+        MesItem item =
                 items.get(index);
 
 
 
-        supplierLabel.setText(
-                item.getSupplier()
+
+        typeLabel.setText(
+                item.getItemType()
         );
 
 
 
-        productLabel.setText(
-                item.getProductName()
+        nameLabel.setText(
+                item.getItemName()
         );
 
 
 
-        quantityLabel.setText(
-                String.valueOf(
-                        item.getQuantity()
-                )
+        fullNameLabel.setText(
+                item.getFullName()
+        );
+
+
+
+        specLabel.setText(
+                item.getSpecification()
+        );
+
+
+
+        tempLabel.setText(
+                item.getTemperature()
         );
 
 
@@ -213,20 +314,16 @@ public class PurchaseBotGUI extends JFrame {
 
         priceLabel.setText(
                 String.valueOf(
-                        item.getTotal()
+                        item.getPrice()
                 )
         );
 
 
 
-        dateLabel.setText(
-                item.getOrderDate()
-        );
-
 
 
         setTitle(
-                "採購資料瀏覽工具  "
+                "MES新增資料 "
                 +(index+1)
                 +"/"
                 +items.size()
@@ -234,7 +331,6 @@ public class PurchaseBotGUI extends JFrame {
 
 
     }
-
 
 
 }
